@@ -18,7 +18,7 @@ public:
         {
             count++;
         }
-        for (temp = count; temp > 1 && temp > count / 2; temp--)
+        for (temp = count; temp > 1 && temp > (count - 1) / 2; temp--)
         {
             int left = x, right = x;
             for (int a = count - temp; a > 0; a--)
