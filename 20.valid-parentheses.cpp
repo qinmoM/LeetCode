@@ -7,64 +7,97 @@
 // @lc code=start
 
 #include <string>
+#include <stack>
 
 using namespace std;
 
 class Solution {
 public:
     bool isValid(string s) {
-        int leftnum = 0;
-        int length = s.length();
-        if (1 >= length)
+        // 100%
+        stack<char> stk;
+        int count = s.length();
+        for (int i = 0; i < count; i++)
         {
-            return false;
-        }
-        for (int i = 0; i < length; i++)
-        {
-            int tempnum = 0;
             char temp = s[i];
+            if (-1 == type(temp))
+            {
+                stk.push(temp);
+            }
             if (1 == type(temp))
             {
-                leftnum--;
-                if (0 == i)
+                if (stk.empty())
                 {
                     return false;
                 }
-                for (int j = i - 1; j >= 0; j--)
+                if (!isSame(temp, stk.top()))
                 {
-                    char tempC = s[j];
-                    if (1 == type(tempC))
-                    {
-                        tempnum += 1;
-                    }
-                    if (-1 == type(tempC))
-                    {
-                        tempnum -= 1;
-                        if (-1 == tempnum)
-                        {
-                            if (!isSame(temp, tempC))
-                            {
-                                return false;
-                            }
-                            break;
-                        }
-                    }
-                    if (0 == j && tempnum > -1)
-                    {
-                        return false;
-                    }
+                    return false;
+                }
+                else
+                {
+                    stk.pop();
                 }
             }
-            else if (-1 == type(temp))
-            {
-                leftnum++;
-            }
         }
-        if (leftnum)
+        if (stk.empty())
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
+        // 1.82%
+        // int leftnum = 0;
+        // int length = s.length();
+        // if (1 >= length)
+        // {
+        //     return false;
+        // }
+        // for (int i = 0; i < length; i++)
+        // {
+        //     int tempnum = 0;
+        //     char temp = s[i];
+        //     if (1 == type(temp))
+        //     {
+        //         leftnum--;
+        //         if (0 == i)
+        //         {
+        //             return false;
+        //         }
+        //         for (int j = i - 1; j >= 0; j--)
+        //         {
+        //             char tempC = s[j];
+        //             if (1 == type(tempC))
+        //             {
+        //                 tempnum += 1;
+        //             }
+        //             if (-1 == type(tempC))
+        //             {
+        //                 tempnum -= 1;
+        //                 if (-1 == tempnum)
+        //                 {
+        //                     if (!isSame(temp, tempC))
+        //                     {
+        //                         return false;
+        //                     }
+        //                     break;
+        //                 }
+        //             }
+        //             if (0 == j && tempnum > -1)
+        //             {
+        //                 return false;
+        //             }
+        //         }
+        //     }
+        //     else if (-1 == type(temp))
+        //     {
+        //         leftnum++;
+        //     }
+        // }
+        // if (leftnum)
+        // {
+        //     return false;
+        // }
+        // return true;
     }
 
     int type(char s)
