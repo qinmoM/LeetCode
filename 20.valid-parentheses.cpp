@@ -16,35 +16,32 @@ public:
     bool isValid(string s) {
         // 100%
         stack<char> stk;
-        int count = s.length();
-        for (int i = 0; i < count; i++)
+        for (char c : s)
         {
-            char temp = s[i];
-            if (-1 == type(temp))
+            if ('(' == c || '[' == c || '{' == c)
             {
-                stk.push(temp);
+                stk.push(c);
             }
-            if (1 == type(temp))
+            else
             {
+                char temp = stk.top();
                 if (stk.empty())
                 {
                     return false;
                 }
-                if (!isSame(temp, stk.top()))
-                {
-                    return false;
-                }
-                else
+                if ('(' == temp && ')' == c ||
+                    '[' == temp && ']' == c ||
+                    '{' == temp && '}' == c )
                 {
                     stk.pop();
                 }
+                else
+                {
+                    return false;
+                }
             }
         }
-        if (stk.empty())
-        {
-            return true;
-        }
-        return false;
+        return stk.empty();
         // 1.82%
         // int leftnum = 0;
         // int length = s.length();
@@ -100,50 +97,50 @@ public:
         // return true;
     }
 
-    int type(char s)
-    {
-        switch (s)
-        {
-        case '(':
-        case '[':
-        case '{':
-            return -1;
-        case ')':
-        case ']':
-        case '}':
-            return 1;
-        default:
-            return 0;
-        }
-    }
+    // int type(char s)
+    // {
+    //     switch (s)
+    //     {
+    //     case '(':
+    //     case '[':
+    //     case '{':
+    //         return -1;
+    //     case ')':
+    //     case ']':
+    //     case '}':
+    //         return 1;
+    //     default:
+    //         return 0;
+    //     }
+    // }
 
-    bool isSame(char c1, char c2)// is right?->is same?
-    {
-        switch (c2)
-        {
-        case '[':
-            if (']' == c1)
-            {
-                return true;
-            }
-            break;
-        case '(':
-            if (')' == c1)
-            {
-                return true;
-            }
-            break;
-        case '{':
-            if ('}' == c1)
-            {
-                return true;
-            }
-            break;
-        default:
-            break;
-        }
-        return false;
-    }
+    // bool isSame(char c1, char c2)// is right?->is same?
+    // {
+    //     switch (c2)
+    //     {
+    //     case '[':
+    //         if (']' == c1)
+    //         {
+    //             return true;
+    //         }
+    //         break;
+    //     case '(':
+    //         if (')' == c1)
+    //         {
+    //             return true;
+    //         }
+    //         break;
+    //     case '{':
+    //         if ('}' == c1)
+    //         {
+    //             return true;
+    //         }
+    //         break;
+    //     default:
+    //         break;
+    //     }
+    //     return false;
+    // }
 };
 // @lc code=end
 
