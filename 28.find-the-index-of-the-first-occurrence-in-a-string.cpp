@@ -70,7 +70,14 @@ public:
             {
                 j++;
                 k++;
-                next[j] = k;
+                if (s[j] == s[k])
+                {
+                    next[j] = next[k];
+                }
+                else
+                {
+                    next[j] = k;
+                }
             }
             else
             {
