@@ -34,13 +34,13 @@ public:
         {
             return head;
         }
-        int Size = size(head);
+        int Size = size(head); // O(n)
         k %= Size;
         if (0 == k)
         {
             return head;
         }
-        ListNode* curr = head;
+        ListNode* curr = head; // O(n)
         ListNode* temp = head;
         while (k--)
         {
