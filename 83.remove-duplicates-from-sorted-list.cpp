@@ -30,11 +30,6 @@ class Solution
 public:
     ListNode* deleteDuplicates(ListNode* head)
     {
-        int Size = size(head);
-        if (Size <= 1)
-        {
-            return head;
-        }
         ListNode* curr = head;
         while (nullptr != curr && nullptr != curr->next)
         {
@@ -50,17 +45,6 @@ public:
             }
         }
         return head;
-    }
-
-    int size(ListNode* head)
-    {
-        int size = 0;
-        while (nullptr != head)
-        {
-            size++;
-            head = head->next;
-        }
-        return size;
     }
 };
 // @lc code=end
