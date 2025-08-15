@@ -15,23 +15,34 @@ class Solution
 public:
     char findTheDifference(string s, string t)
     {
-        std::unordered_map<char, int> hash;
+        char character = 0;
         for (char c : t)
         {
-            ++hash[c];
+            character ^= c;
         }
         for (char c : s)
         {
-            --hash[c];
+            character ^= c;
         }
-        for (char c : t)
-        {
-            if (1 == hash[c])
-            {
-                return c;
-            }
-        }
-        throw -1;
+        return character;
+
+        // std::unordered_map<char, int> hash;
+        // for (char c : t)
+        // {
+        //     ++hash[c];
+        // }
+        // for (char c : s)
+        // {
+        //     --hash[c];
+        // }
+        // for (char c : t)
+        // {
+        //     if (1 == hash[c])
+        //     {
+        //         return c;
+        //     }
+        // }
+        // throw -1;
     }
 };
 // @lc code=end
