@@ -48,6 +48,10 @@ public:
                 {
                     isKind = false;
                 }
+                if (!isKind)
+                {
+                    break
+                }
             }
             if (isKind)
             {
