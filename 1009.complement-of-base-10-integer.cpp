@@ -10,10 +10,9 @@ class Solution
 public:
     int bitwiseComplement(int n) 
     {
-        if (n == 0) return 1;
-        int bits = 0;
-        while (n >> bits++);
-        return (~n) & ((1 << bits - 1) - 1);
+        int bits = -1;
+        while (n >> ++bits);
+        return n ? ~n & ((1 << bits) - 1) : 1;
     }
 };
 // @lc code=end
