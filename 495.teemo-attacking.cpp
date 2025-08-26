@@ -17,8 +17,7 @@ public:
         int result = duration;
         for (int i = 0; i < timeSeries.size() - 1; ++i)
         {
-            int temp = timeSeries[i + 1] - timeSeries[i];
-            result += std::min(temp, duration);
+            result += std::min(timeSeries[i + 1] - timeSeries[i], duration);
         }
         return result;
     }
