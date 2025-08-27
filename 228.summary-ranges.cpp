@@ -26,8 +26,7 @@ public:
             std::string temp = std::to_string(nums[tempNum]);
             if (tempNum != i)
             {
-                temp += "->";
-                temp += std::to_string(nums[i]);
+                temp = temp + "->" + std::to_string(nums[i]);
             }
             result.push_back(temp);
         }
