@@ -7,6 +7,7 @@
 // @lc code=start
 #include <vector>
 #include <unordered_map>
+#include <numeric>
 
 using namespace std;
 
@@ -15,31 +16,17 @@ class Solution
 public:
     bool hasGroupsSizeX(vector<int>& deck)
     {
-        if (1 == deck.size())
-        {
-            return false;
-        }
         std::unordered_map<int, int> hash;
         for (int i : deck)
         {
             ++hash[i];
         }
         int count = 0;
-        for (std::pair<int, int> p : hash)
+        for (const auto& [_, cnt] : hash)
         {
-            if (0 == count)
-            {
-                count = p.second;
-            }
-            else
-            {
-                if (p.second != count)
-                {
-                    return false;
-                }
-            }
+            count = std::gcd(count, cnt);
         }
-        return true;
+        return count > 1;
     }
 };
 // @lc code=end
