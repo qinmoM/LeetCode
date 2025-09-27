@@ -23,46 +23,66 @@ class Solution
 public:
     int getMinimumDifference(TreeNode* root)
     {
-        int m = 100001;
-        preorder(root, m);
-        return m;
+        int pre = -1;
+        int minNum = 100001;
+        inorder(root, minNum, pre);
+        return minNum;
+        // int m = 100001;
+        // preorder(root, m);
+        // return m;
     }
 
-    void preorder(TreeNode* node, int& minTemp)
+    void inorder(TreeNode* node, int& minNum, int& last)
     {
         if (!node)
         {
             return;
         }
-        if (node->right)
+
+        inorder(node->left, minNum, last);
+        if (-1 != last)
         {
-            minTemp = std::min(minTemp, succeed(node->right) - node->val);
+            minNum = std::min(minNum, node->val - last);
         }
-        if (node->left)
-        {
-            minTemp = std::min(node->val - precursor(node->left), minTemp);
-        }
-        preorder(node->left, minTemp);
-        preorder(node->right, minTemp);
+        last = node->val;
+        inorder(node->right, minNum, last);
     }
 
-    int precursor(TreeNode* node)
-    {
-        if (!node->right)
-        {
-            return node->val;
-        }
-        return precursor(node->right);
-    }
+    // void preorder(TreeNode* node, int& minTemp)
+    // {
+    //     if (!node)
+    //     {
+    //         return;
+    //     }
+    //     if (node->right)
+    //     {
+    //         minTemp = std::min(minTemp, succeed(node->right) - node->val);
+    //     }
+    //     if (node->left)
+    //     {
+    //         minTemp = std::min(node->val - precursor(node->left), minTemp);
+    //     }
+    //     preorder(node->left, minTemp);
+    //     preorder(node->right, minTemp);
+    // }
 
-    int succeed(TreeNode* node)
-    {
-        if (!node->left)
-        {
-            return node->val;
-        }
-        return succeed(node->left);
-    }
+    // int precursor(TreeNode* node)
+    // {
+    //     if (!node->right)
+    //     {
+    //         return node->val;
+    //     }
+    //     return precursor(node->right);
+    // }
+
+    // int succeed(TreeNode* node)
+    // {
+    //     if (!node->left)
+    //     {
+    //         return node->val;
+    //     }
+    //     return succeed(node->left);
+    // }
 
 };
 // @lc code=end
