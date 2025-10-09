@@ -14,26 +14,41 @@ class Solution
 public:
     int lengthOfLongestSubstring(string s)
     {
-        int count = 0;
-        for (int i = 0; i < s.length(); ++i)
+        // sliding window
+        int result = 0, left = 0, right = 0;
+        std::unordered_set<char> hash;
+        for (; right < s.length(); ++right)
         {
-            std::unordered_set<char> hash;
-            int index = i;
-            hash.insert(s[index]);
-            while (++index < s.length())
+            while (hash.find(s[right]) != hash.end())
             {
-                if (hash.find(s[index]) != hash.end())
-                {
-                    break;
-                }
-                else
-                {
-                    hash.insert(s[index]);
-                }
+                hash.erase(s[left]);
+                ++left;
             }
-            count = std::max(count, static_cast<int>(hash.size()));
+            hash.insert(s[right]);
+            result = std::max(result, right - left + 1);
         }
-        return count;
+        return result;
+
+        // int count = 0;
+        // for (int i = 0; i < s.length(); ++i)
+        // {
+        //     std::unordered_set<char> hash;
+        //     int index = i;
+        //     hash.insert(s[index]);
+        //     while (++index < s.length())
+        //     {
+        //         if (hash.find(s[index]) != hash.end())
+        //         {
+        //             break;
+        //         }
+        //         else
+        //         {
+        //             hash.insert(s[index]);
+        //         }
+        //     }
+        //     count = std::max(count, static_cast<int>(hash.size()));
+        // }
+        // return count;
     }
 };
 // @lc code=end
