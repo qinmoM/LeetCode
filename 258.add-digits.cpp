@@ -10,14 +10,7 @@ class Solution
 public:
     int addDigits(int num)
     {
-        while (num / 10)
-        {
-            int temp = num;
-            int all = 0;
-            do { all += temp % 10; } while (temp /= 10);
-            num = all;
-        }
-        return num;
+        return (num % 9 == 0 ? (num == 0 ? 0 : 9) : num % 9);
     }
 };
 // @lc code=end
