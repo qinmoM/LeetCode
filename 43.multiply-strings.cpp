@@ -18,13 +18,15 @@ public:
         std::string result = "0";
         for (int i = 0; i < num2.size(); ++i)
         {
+            std::string s1 = "0";
             for (int j = 0; j < num1.size(); ++j)
             {
                 int index1 = num1.size() - j - 1;
                 int index2 = num2.size() - i - 1;
                 std::string temp = std::to_string((num2[index2] - '0') * (num1[index1] - '0')) + std::string(i + j, '0');
-                result = calPlus(result, temp);
+                s1 = calPlus(s1, temp);
             }
+            result = calPlus(result, s1);
         }
         return result;
     }
