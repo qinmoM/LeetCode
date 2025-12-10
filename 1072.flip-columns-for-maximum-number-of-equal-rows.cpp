@@ -16,48 +16,96 @@ public:
     int maxEqualRowsAfterFlips(vector<vector<int>>& matrix)
     {
         int all = 0;
-        std::vector<bool> same;
-        recursion(matrix, all, 0, matrix.size(), same);
+        recursive(matrix, all, 0, 0, {});
         return all;
+
+        // int all = 0;
+        // std::vector<bool> same;
+        // recursion(matrix, all, 0, matrix.size(), same);
+        // return all;
     }
 
-    void recursion(std::vector<std::vector<int>>& matrix, int& all, int col, int currAll, std::vector<bool>& same)
+    void recursive(std::vector<std::vector<int>>& matrix, int& all, int col, bool last, std::vector<int> same)
     {
+        int curr = same.size();
         if (col >= matrix[0].size())
         {
-            all = std::max(all, currAll);
+            all = std::max(all, curr);
             return;
         }
 
-        if (all > currAll) return;
-        same.push_back(true);
-        recursion(matrix, all, col + 1, num(matrix, col, same), same);
-        same.pop_back();
-        same.push_back(false);
-        recursion(matrix, all, col + 1, num(matrix, col, same), same);
-        same.pop_back();
+        if (col != 0 && all >= curr) return;
+        std::vector<int> temp = same;
+        if (0 == col)
+        {
+            temp.resize(matrix.size());
+            for (int i = 0; i < matrix.size(); ++i) temp[i] = i;
+        }
+        else
+        {
+            for (int i = 0; i < temp.size(); )
+            {
+                int index = temp[i];
+                if (matrix[index][col] != (last ? matrix[index][col - 1] : !matrix[index][col - 1])) temp.erase(temp.begin() + i);
+                else ++i;
+            }
+        }
+        recursive(matrix, all, col + 1, true, temp);
+        temp = same;
+        if (0 == col)
+        {
+            temp.reserve(matrix.size());
+            for (int i = 0; i < matrix.size(); ++i) temp[i] = i;
+        }
+        else
+        {
+            for (int i = 0; i < temp.size(); )
+            {
+                int index = temp[i];
+                if (matrix[index][col] != (last ? !matrix[index][col - 1] : matrix[index][col - 1])) temp.erase(temp.begin() + i);
+                else ++i;
+            }
+        }
+        recursive(matrix, all, col + 1, false, temp);
     }
 
-    int num(const std::vector<std::vector<int>>& matrix, int col, const std::vector<bool>& same)
-    {
-        int num = 0;
-        for (int i = 0; i < matrix.size(); ++i)
-        {
-            bool isSame = true;
-            for (int j = 0; j < col; ++j)
-            {
-                bool left = same[j] ? matrix[i][j] : !matrix[i][j];
-                bool right = same[j + 1] ? matrix[i][j + 1] : !matrix[i][j + 1];
-                if (left == right)
-                {
-                    isSame = false;
-                    break;
-                }
-            }
-            if (isSame) ++num;
-        }
-        return num;
-    }
+    // void recursion(std::vector<std::vector<int>>& matrix, int& all, int col, int currAll, std::vector<bool>& same)
+    // {
+    //     if (col >= matrix[0].size())
+    //     {
+    //         all = std::max(all, currAll);
+    //         return;
+    //     }
+
+    //     if (all > currAll) return;
+    //     same.push_back(true);
+    //     recursion(matrix, all, col + 1, num(matrix, col, same), same);
+    //     same.pop_back();
+    //     same.push_back(false);
+    //     recursion(matrix, all, col + 1, num(matrix, col, same), same);
+    //     same.pop_back();
+    // }
+
+    // int num(const std::vector<std::vector<int>>& matrix, int col, const std::vector<bool>& same)
+    // {
+    //     int num = 0;
+    //     for (int i = 0; i < matrix.size(); ++i)
+    //     {
+    //         bool isSame = true;
+    //         for (int j = 0; j < col; ++j)
+    //         {
+    //             bool left = same[j] ? matrix[i][j] : !matrix[i][j];
+    //             bool right = same[j + 1] ? matrix[i][j + 1] : !matrix[i][j + 1];
+    //             if (left == right)
+    //             {
+    //                 isSame = false;
+    //                 break;
+    //             }
+    //         }
+    //         if (isSame) ++num;
+    //     }
+    //     return num;
+    // }
 };
 // @lc code=end
 
