@@ -14,44 +14,72 @@ class Solution
 public:
     string pushDominoes(string dominoes)
     {
-        if (1 >= dominoes.size()) return dominoes;
         int size = dominoes.size();
-        int step = 1;
-        while (step)
+        std::string temp = dominoes;
+        for (int i = 0; i < size; )
         {
-            step = 0;
-            std::string temp = dominoes;
-            if ('.' == dominoes[0] && 'L' == dominoes[1])
+            if ('R' == dominoes[i])
             {
-                temp[0] = 'L';
-            }
-            for (int i = 1; i < size - 1; ++i)
-            {
-                if ('.' != dominoes[i]) continue;
-                if ('L' == dominoes[i + 1])
-                {
-                    if ('R' != dominoes[i - 1])
-                    {
-                        temp[i] = 'L';
-                        ++step;
-                    }
-                }
+                int j = i + 1;
+                while (j < size && '.' == dominoes[j]) ++j;
+                if (j == size || 'R' == dominoes[j]) for (int n = i + 1; n < j; ++n) temp[n] = 'R';
                 else
                 {
-                    if ('R' == dominoes[i - 1])
-                    {
-                        temp[i] = 'R';
-                        ++step;
-                    }
+                    int m = (i + j - 1) / 2;
+                    for (int n = i + 1; n <= m; ++n) temp[n] = 'R';
+                    for (int n = m + (((i + j) & 1) ? 1 : 2); n < j; ++n) temp[n] = 'L';
                 }
+                i = j;
             }
-            if ('.' == dominoes[size - 1] && 'R' == dominoes[size - 2])
+            else if ('L' == dominoes[i])
             {
-                temp[size - 1] = 'R';
+                int j = i - 1;
+                while (j >= 0 && '.' == dominoes[j]) --j;
+                if (-1 == j || 'L' == dominoes[j]) for (int n = j + 1; n < i; ++n) temp[n] = 'L';
+                ++i;
             }
-            dominoes = temp;
+            else ++i;
         }
-        return dominoes;
+        return temp;
+
+        // if (1 >= dominoes.size()) return dominoes;
+        // int size = dominoes.size();
+        // int step = 1;
+        // while (step)
+        // {
+        //     step = 0;
+        //     std::string temp = dominoes;
+        //     if ('.' == dominoes[0] && 'L' == dominoes[1])
+        //     {
+        //         temp[0] = 'L';
+        //     }
+        //     for (int i = 1; i < size - 1; ++i)
+        //     {
+        //         if ('.' != dominoes[i]) continue;
+        //         if ('L' == dominoes[i + 1])
+        //         {
+        //             if ('R' != dominoes[i - 1])
+        //             {
+        //                 temp[i] = 'L';
+        //                 ++step;
+        //             }
+        //         }
+        //         else
+        //         {
+        //             if ('R' == dominoes[i - 1])
+        //             {
+        //                 temp[i] = 'R';
+        //                 ++step;
+        //             }
+        //         }
+        //     }
+        //     if ('.' == dominoes[size - 1] && 'R' == dominoes[size - 2])
+        //     {
+        //         temp[size - 1] = 'R';
+        //     }
+        //     dominoes = temp;
+        // }
+        // return dominoes;
 
         // std::vector<int> vecL(dominoes.size(), 0);
         // std::vector<int> vecR(dominoes.size(), 0);
