@@ -14,27 +14,48 @@ class Solution
 public:
     void sortColors(vector<int>& nums)
     {
-        int curr = 0;
-        for (int i = 0; i < nums.size(); ++i)
+        int left = 0;
+        while (left < nums.size() && 0 == nums[left]) ++left;
+        int mid = left;
+        int right = nums.size() - 1;
+        while (right >= 0 && 2 == nums[right]) --right;
+        while (mid <= right)
         {
-            while (i < nums.size() && nums[i] == 0) ++i;
-            curr = i + 1;
-            while (curr < nums.size() && nums[i] != 0) ++curr;
-            if (curr >= nums.size())
+            if (0 == nums[mid])
             {
-                curr = i;
-                break;
+                std::swap(nums[mid], nums[left]);
+                ++left;
+                ++mid;
             }
-            std::swap(nums[i], nums[curr]);
+            else if (2 == nums[mid])
+            {
+                std::swap(nums[mid], nums[right]);
+                --right;
+            }
+            else ++mid;
         }
-        for (int i = curr; i < nums.size(); ++i)
-        {
-            while (i < nums.size() && nums[i] == 1) ++i;
-            curr = i + 1;
-            while (curr < nums.size() && nums[i] != 1) ++curr;
-            if (curr >= nums.size()) break;
-            std::swap(nums[i], nums[curr]);
-        }
+
+        // int curr = 0;
+        // for (int i = 0; i < nums.size(); ++i)
+        // {
+        //     while (i < nums.size() && nums[i] == 0) ++i;
+        //     curr = i + 1;
+        //     while (curr < nums.size() && nums[i] != 0) ++curr;
+        //     if (curr >= nums.size())
+        //     {
+        //         curr = i;
+        //         break;
+        //     }
+        //     std::swap(nums[i], nums[curr]);
+        // }
+        // for (int i = curr; i < nums.size(); ++i)
+        // {
+        //     while (i < nums.size() && nums[i] == 1) ++i;
+        //     curr = i + 1;
+        //     while (curr < nums.size() && nums[i] != 1) ++curr;
+        //     if (curr >= nums.size()) break;
+        //     std::swap(nums[i], nums[curr]);
+        // }
     }
 };
 // @lc code=end
