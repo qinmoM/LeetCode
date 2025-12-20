@@ -5,6 +5,7 @@
  */
 
 // @lc code=start
+#include <vector>
 #include <unordered_map>
 
 class Solution
@@ -12,25 +13,15 @@ class Solution
 public:
     int numTrees(int n)
     {
-        std::unordered_map<int, int> hash;
-        return num(hash, 1, n);
-    }
-
-    int num(std::unordered_map<int, int>& hash, int left, int right)
-    {
-        if (left >= right) return 1;
-        int count = 0;
-        int temp = right - left;
-        if (hash.find(temp) == hash.end())
+        std::vector<int> dp(n + 1, 0);
+        dp[0] = 1;
+        dp[1] = 1;
+        for (int i = 2; i <= n; ++i)
         {
-            for (int i = left; i <= right; ++i)
-            {
-                count += num(hash, left, i - 1) * num(hash, i + 1, right);
-            }
-            hash[temp] = count;
+            for (int j = 1; j <= i; ++j)
+                dp[i] += dp[j - 1] * dp[i - j];
         }
-        else count = hash[temp];
-        return count;
+        return dp[n];
     }
 };
 // @lc code=end
