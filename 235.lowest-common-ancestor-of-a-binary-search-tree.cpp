@@ -33,19 +33,29 @@ public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
     {
         if (p->val > q->val) std::swap(p, q);
-        return traverse(root, p, q);
+        while (!(root->val >= p->val && root->val <= q->val))
+        {
+            if (q->val < root->val)
+                root = root->left;
+            else
+                root = root->right;
+        }
+        return root;
+
+        // if (p->val > q->val) std::swap(p, q);
+        // return traverse(root, p, q);
     }
 
-    TreeNode* traverse(TreeNode* node, TreeNode* p, TreeNode* q)
-    {
-        if (node->val >= p->val && node->val <= q->val)
-            return node;
+    // TreeNode* traverse(TreeNode* node, TreeNode* p, TreeNode* q)
+    // {
+    //     if (node->val >= p->val && node->val <= q->val)
+    //         return node;
             
-        if (q->val < node->val)
-            return traverse(node->left, p, q);
-        else
-            return traverse(node->right, p, q);
-    }
+    //     if (q->val < node->val)
+    //         return traverse(node->left, p, q);
+    //     else
+    //         return traverse(node->right, p, q);
+    // }
 };
 // @lc code=end
 
