@@ -31,64 +31,97 @@ class Solution
 public:
     TreeNode* deleteNode(TreeNode* root, int key)
     {
-        TreeNode* node = root;
-        TreeNode* parent = nullptr;
-        while (node && node->val != key)
-        {
-            parent = node;
+        if (!root) return nullptr;
 
-            if (node->val > key)
-                node = node->left;
-            else
-                node = node->right;
-        }
-
-        if (!node) return root;
-
-        if (node->left && node->right)
-        {
-            TreeNode* pre = node->left;
-            TreeNode* preParent = nullptr;
-            while (pre->right)
-            {
-                preParent = pre;
-                pre = pre->right;
-            }
-            node->val = pre->val;
-            if (preParent)
-                preParent->right = pre->left;
-            else
-                node->left = pre->left;
-            delete pre;
-        }
-        else if (node->left)
-        {
-            TreeNode* temp = node;
-
-            if (!parent)
-                root = node->left;
-            else if (parent->left == node)
-                parent->left = node->left;
-            else
-                parent->right = node->left;
-
-            delete temp;
-        }
+        if (key > root->val)
+            root->right = deleteNode(root->right, key);
+        else if (key < root->val)
+            root->left = deleteNode(root->left, key);
         else
         {
-            TreeNode* temp = node;
+            if (!root->left)
+            {
+                TreeNode* temp = root->right;
+                delete root;
+                return temp;
+            }
 
-            if (!parent)
-                root = node->right;
-            else if (parent->left == node)
-                parent->left = node->right;
-            else
-                parent->right = node->right;
+            if (!root->right)
+            {
+                TreeNode* temp = root->left;
+                delete root;
+                return temp;
+            }
 
-            delete temp;
+            TreeNode* pre = root->left;
+            while (pre->right)
+                pre = pre->right;
+
+            root->val = pre->val;
+            root->left = deleteNode(root->left, pre->val);
         }
 
         return root;
+
+
+        // TreeNode* node = root;
+        // TreeNode* parent = nullptr;
+        // while (node && node->val != key)
+        // {
+        //     parent = node;
+
+        //     if (node->val > key)
+        //         node = node->left;
+        //     else
+        //         node = node->right;
+        // }
+
+        // if (!node) return root;
+
+        // if (node->left && node->right)
+        // {
+        //     TreeNode* pre = node->left;
+        //     TreeNode* preParent = nullptr;
+        //     while (pre->right)
+        //     {
+        //         preParent = pre;
+        //         pre = pre->right;
+        //     }
+        //     node->val = pre->val;
+        //     if (preParent)
+        //         preParent->right = pre->left;
+        //     else
+        //         node->left = pre->left;
+        //     delete pre;
+        // }
+        // else if (node->left)
+        // {
+        //     TreeNode* temp = node;
+
+        //     if (!parent)
+        //         root = node->left;
+        //     else if (parent->left == node)
+        //         parent->left = node->left;
+        //     else
+        //         parent->right = node->left;
+
+        //     delete temp;
+        // }
+        // else
+        // {
+        //     TreeNode* temp = node;
+
+        //     if (!parent)
+        //         root = node->right;
+        //     else if (parent->left == node)
+        //         parent->left = node->right;
+        //     else
+        //         parent->right = node->right;
+
+        //     delete temp;
+        // }
+
+        // return root;
     }
 };
 // @lc code=end
