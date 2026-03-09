@@ -35,15 +35,40 @@ class Solution
 public:
     string tree2str(TreeNode* root)
     {
-        if (!root) return "";
+        std::string s;
+        dfs(root, s);
+        return s;
 
-        if (!root->left && !root->right)
-            return std::to_string(root->val);
+        // if (!root) return "";
 
-        std::string left = tree2str(root->left);
-        std::string right = tree2str(root->right);
+        // if (!root->left && !root->right)
+        //     return std::to_string(root->val);
 
-        return std::to_string(root->val) + "(" + left + ")" + (root->right ? "(" + right + ")" : "");
+        // std::string left = tree2str(root->left);
+        // std::string right = tree2str(root->right);
+
+        // return std::to_string(root->val) + "(" + left + ")" + (root->right ? "(" + right + ")" : "");
+    }
+
+    void dfs(TreeNode* node, std::string& s)
+    {
+        if (!node) return;
+
+        s += std::to_string(node->val);
+
+        if (node->left || node->right)
+        {
+            s += "(";
+            dfs(node->left, s);
+            s += ")";
+        }
+
+        if (node->right)
+        {
+            s += "(";
+            dfs(node->right, s);
+            s += ")";
+        }
     }
 };
 // @lc code=end
