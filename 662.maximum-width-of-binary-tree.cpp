@@ -26,42 +26,42 @@
 //     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 // };
 
-#include <unordered_map>
+#include <queue>
 #include <algorithm>
 
 class Solution
 {
 public:
+    using ull = unsigned long long;
     int widthOfBinaryTree(TreeNode* root)
     {
-        std::unordered_map<int, std::pair<int, int>> hash;
+        std::queue<std::pair<TreeNode*, ull>> q;
+        q.push({root, 0});
+        ull ans = 0;
+        int size = q.size();
 
-        dfs(root, 0, 1, hash);
-
-        std::unordered_map<int, std::pair<int, int>>::iterator it = std::max_element(hash.begin(), hash.end(),
-            [](const std::pair<int, std::pair<int, int>>& a, const std::pair<int, std::pair<int, int>>& b)
-            {
-                return a.second.second - a.second.first < b.second.second - b.second.first;
-            }
-        );
-
-        return it->second.second - it->second.first + 1;
-    }
-
-    void dfs(TreeNode* node, int level, int target, std::unordered_map<int, std::pair<int, int>>& hash)
-    {
-        if (!node) return;
-
-        if (hash.find(level) == hash.end())
+        while (size)
         {
-            hash[level].first = INT_MAX;
-            hash[level].second = INT_MIN;
-        }
-        hash[level].first = std::min(target, hash[level].first);
-        hash[level].second = std::max(target, hash[level].second);
+            ull left = q.front().second;
+            ull right = left;
 
-        dfs(node->left, level + 1, target * 2 - 1, hash);
-        dfs(node->right, level + 1, target * 2, hash);
+            for (int i = 0; i < size; ++i)
+            {
+                auto [node, val] = q.front();
+                q.pop();
+
+                right = val;
+
+                if (node->left)
+                    q.push({node->left, val * 2});
+                if (node->right)
+                    q.push({node->right, val * 2 + 1});
+            }
+
+            ans = std::max(ans, right - left + 1);
+            size = q.size();
+        }
+        return static_cast<int>(ans);
     }
 };
 // @lc code=end
