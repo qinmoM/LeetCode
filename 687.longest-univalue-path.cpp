@@ -35,35 +35,54 @@ class Solution
 public:
     int longestUnivaluePath(TreeNode* root)
     {
-        if (!root) return 0;
+        int ans = 0;
+        dfs(root, ans);
+        return ans;
 
-        std::unordered_map<int, int> hash;
-        dfs(root, hash);
-
-        return std::max_element(hash.begin(), hash.end(),
-            [](const std::pair<int, int>& a, const std::pair<int, int>& b)
-            {
-                return a.second < b.second;
-            }
-        )->second;
+        // if (!root) return 0;
+        //
+        // std::unordered_map<int, int> hash;
+        // dfs(root, hash);
+        //
+        // return std::max_element(hash.begin(), hash.end(),
+        //     [](const std::pair<int, int>& a, const std::pair<int, int>& b)
+        //     {
+        //         return a.second < b.second;
+        //     }
+        // )->second;
     }
 
-    int findPath(TreeNode* node, int val)
+    int dfs(TreeNode* node, int& ans)
     {
-        if (!node || node->val != val) return 0;
+        if (!node) return 0;
 
-        return std::max(findPath(node->left, val), findPath(node->right, val)) + 1;
+        int left = dfs(node->left, ans);
+        int right = dfs(node->right, ans);
+
+        if (node->left && node->left->val != node->val) left = 0;
+        if (node->right && node->right->val != node->val) right = 0;
+
+        ans = std::max(ans, left + right);
+
+        return std::max(left, right) + 1;
     }
 
-    void dfs(TreeNode* node, std::unordered_map<int, int>& hash)
-    {
-        if (!node) return;
-
-        hash[node->val] = std::max(hash[node->val], findPath(node->left, node->val) + findPath(node->right, node->val));
-
-        dfs(node->left, hash);
-        dfs(node->right, hash);
-    }
+    // int findPath(TreeNode* node, int val)
+    // {
+    //     if (!node || node->val != val) return 0;
+    //
+    //     return std::max(findPath(node->left, val), findPath(node->right, val)) + 1;
+    // }
+    //
+    // void dfs(TreeNode* node, std::unordered_map<int, int>& hash)
+    // {
+    //     if (!node) return;
+    //
+    //     hash[node->val] = std::max(hash[node->val], findPath(node->left, node->val) + findPath(node->right, node->val));
+    //
+    //     dfs(node->left, hash);
+    //     dfs(node->right, hash);
+    // }
 };
 // @lc code=end
 
