@@ -27,6 +27,8 @@
 // };
 
 #include <iostream>
+#include <unordered_map>
+#include <algorithm>
 
 class Solution
 {
@@ -34,28 +36,33 @@ public:
     int longestUnivaluePath(TreeNode* root)
     {
         if (!root) return 0;
-        int all = 1;
-        recursion(root->left, root->val, 1, all);
-        recursion(root->right, root->val, 1, all);
-        return all;
+
+        std::unordered_map<int, int> hash;
+        dfs(root, hash);
+
+        return std::max_element(hash.begin(), hash.end(),
+            [](const std::pair<int, int>& a, const std::pair<int, int>& b)
+            {
+                return a.second < b.second;
+            }
+        )->second;
     }
 
-    void recursion(TreeNode* node, int last, int same, int& all)
+    int findPath(TreeNode* node, int val)
     {
-        if (nullptr == node)
-        {
-            all = std::max(same, all);
-            return;
-        }
+        if (!node || node->val != val) return 0;
 
-        if (node->val != last)
-        {
-            all = std::max(same, all);
-            same = 0;
-        }
+        return std::max(findPath(node->left, val), findPath(node->right, val)) + 1;
+    }
 
-        recursion(node->left, node->val, same + 1, all);
-        recursion(node->right, node->val, same + 1, all);
+    void dfs(TreeNode* node, std::unordered_map<int, int>& hash)
+    {
+        if (!node) return;
+
+        hash[node->val] = std::max(hash[node->val], findPath(node->left, node->val) + findPath(node->right, node->val));
+
+        dfs(node->left, hash);
+        dfs(node->right, hash);
     }
 };
 // @lc code=end
