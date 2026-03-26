@@ -25,25 +25,43 @@ public:
         }
         while (left < right)
         {
-            int all = left;
+            int mid = (right + left) / 2;
+
+            int all = mid;
             int count = 1;
             for (int w : weights)
             {
                 if (w > all)
                 {
                     ++count;
-                    all = left - w;
+                    all = mid - w;
                 }
                 else
-                {
                     all -= w;
-                }
             }
 
             if (count <= days)
-                break;
+                right = mid;
+            else
+                left = mid + 1;
 
-            ++left;
+            // int all = left;
+            // int count = 1;
+            // for (int w : weights)
+            // {
+            //     if (w > all)
+            //     {
+            //         ++count;
+            //         all = left - w;
+            //     }
+            //     else
+            //         all -= w;
+            // }
+
+            // if (count <= days)
+            //     break;
+
+            // ++left;
         }
         return left;
 
