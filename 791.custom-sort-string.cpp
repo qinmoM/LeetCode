@@ -16,7 +16,7 @@ public:
         std::sort(s.begin(), s.end(),
             [&custom](const char& a, const char& b)
             {
-                return custom[a - 'a'] > custom[b - 'a'];
+                return custom[a - 'a'] < custom[b - 'a'];
             }
         );
 
