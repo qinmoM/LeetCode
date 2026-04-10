@@ -5,30 +5,25 @@
  */
 
 // @lc code=start
-#include <list>
+#include <deque>
 
 class RecentCounter
 {
 public:
-    RecentCounter()
-    {
-        
-    }
+    RecentCounter() { }
     
     int ping(int t)
     {
-        int count = 0;
         int target = t - 3000;
+        q_.push_back(t);
 
-        list_.push_back(t);
+        while (q_.size() && q_.front() < target)
+            q_.pop_front();
 
-        for (auto it = list_.rbegin(); it != list_.rend() && *it >= target; ++it)
-            ++count;
-
-        return count;
+        return q_.size();
     }
 private:
-    std::list<int> list_;
+    std::deque<int> q_;
 };
 
 /**
