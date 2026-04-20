@@ -7,6 +7,7 @@
 // @lc code=start
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using std::string;
@@ -16,7 +17,37 @@ class Solution
 public:
     string removeDuplicateLetters(string s)
     {
-        ;
+        std::unordered_map<char, int> nums;
+        for (char c : s)
+            ++nums[c];
+
+        std::string res;
+        std::unordered_set<char> hash;
+        for (char c : s)
+        {
+            --nums[c];
+
+            if (!res.empty() && hash.find(c) != hash.end()) continue;
+            hash.insert(c);
+
+            if (res.empty() || res.back() < c)
+            {
+                res.push_back(c);
+                continue;
+            }
+
+            hash.insert(c);
+
+            while (res.size() && res.back() >= c && nums[res.back()])
+            {
+                hash.erase(res.back());
+                res.pop_back();
+            }
+            res.push_back(c);
+            hash.insert(c);
+        }
+
+        return res;
 
         // std::unordered_map<char, int> hash(26);
         // std::string res;
