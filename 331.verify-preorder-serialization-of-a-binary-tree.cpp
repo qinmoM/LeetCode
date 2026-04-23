@@ -15,38 +15,60 @@ class Solution
 public:
     bool isValidSerialization(string preorder)
     {
-        int temp = -1;
-        std::vector<int> stack;
+        int num = 1;
 
-        // for (int i = 0; i < preorder.size(); ++i)
-        for (char c : preorder)
+        for (int i = 0; i < preorder.size(); ++i)
         {
-            if (stack.size() && -1 == *stack.begin()) return false;
+            if (0 == num) return false;
 
+            char c = preorder[i];
             if ('#' == c)
             {
-                while (stack.size() > 1 && -1 == stack.back())
-                {
-                    stack.pop_back();
-                    stack.pop_back();
-                }
+                --num;
+            }
+            else if (',' != c)
+            {
+                num += 1;
 
-                stack.push_back(-1);
-            }
-            else if (',' == c)
-            {
-                if (-1 != temp) stack.push_back(temp);
-                temp = -1;
-            }
-            else
-            {
-                if (-1 == temp) temp = 0;
-                temp = temp * 10 + c - '0';
+                while (i < preorder.size() && (preorder[i] >= '0' && preorder[i] <= '9'))
+                    ++i;
             }
         }
-        if (-1 != temp) stack.push_back(temp);
 
-        return stack.size() == 1 && stack.back() == -1;
+        return num == 0;
+
+        // int temp = -1;
+        // std::vector<int> stack;
+        //
+        // // for (int i = 0; i < preorder.size(); ++i)
+        // for (char c : preorder)
+        // {
+        //     if (stack.size() && -1 == *stack.begin()) return false;
+        //
+        //     if ('#' == c)
+        //     {
+        //         while (stack.size() > 1 && -1 == stack.back())
+        //         {
+        //             stack.pop_back();
+        //             stack.pop_back();
+        //         }
+        //
+        //         stack.push_back(-1);
+        //     }
+        //     else if (',' == c)
+        //     {
+        //         if (-1 != temp) stack.push_back(temp);
+        //         temp = -1;
+        //     }
+        //     else
+        //     {
+        //         if (-1 == temp) temp = 0;
+        //         temp = temp * 10 + c - '0';
+        //     }
+        // }
+        // if (-1 != temp) stack.push_back(temp);
+        //
+        // return stack.size() == 1 && stack.back() == -1;
     }
 };
 // @lc code=end
