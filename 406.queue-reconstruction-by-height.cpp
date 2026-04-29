@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <list>
+#include <iterator>
 
 using std::vector;
 
@@ -24,11 +26,15 @@ public:
             }
         );
 
-        std::vector<std::vector<int>> res;
-        for (std::vector<int>& vec : people)
-            res.insert(res.begin() + vec[1], vec);
+        std::list<std::vector<int>> lst;
+        for (std::vector<int>& p : people)
+        {
+            auto it = lst.begin();
+            advance(it, p[1]);
+            lst.insert(it, p);
+        }
 
-        return res;
+        return std::vector<std::vector<int>>(lst.begin(), lst.end());
 
         // std::map<int, std::set<int>> tree;
         //
