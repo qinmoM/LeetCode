@@ -14,17 +14,18 @@ class Solution
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target)
     {
-        for (int i = 0; i < matrix.size(); ++i)
-        {
-            for (int j = 0; j < matrix[0].size(); ++j)
-            {
-                if (target == matrix[i][j])
-                    return true;
-                else if (target < matrix[i][j])
-                    break;
-            }
-        }
+        int r = 0;
+        int c = matrix[0].size() - 1;
 
+        while (r < matrix.size() && c >= 0)
+        {
+            if (matrix[r][c] == target)
+                return true;
+            else if (matrix[r][c] > target)
+                --c;
+            else
+                ++r;
+        }
         return false;
     }
 };
