@@ -5,7 +5,6 @@
  */
 
 // @lc code=start
-#include <vector>
 #include <string>
 
 using std::string;
@@ -15,11 +14,15 @@ class Trie
 public:
     struct Node
     {
-        Node() : next_(26, nullptr), end_(false), pass_(false) { }
+        Node()
+            : end_(false)
+        {
+            for (int i = 0; i < 26; ++i)
+                next_[i] = nullptr;
+        }
 
-        std::vector<Node*> next_;
+        Node* next_[26];
         bool end_;
-        bool pass_;
     };
 
     Trie() : root_(new Node()) { }
@@ -27,7 +30,6 @@ public:
     void insert(string word)
     {
         Node* curr = root_;
-        curr->pass_ = true;
 
         for (char c : word)
         {
@@ -35,7 +37,6 @@ public:
                 curr->next_[index(c)] = new Node();
 
             curr = curr->next_[index(c)];
-            curr->pass_ = true;
         }
 
         curr->end_ = true;
@@ -64,7 +65,7 @@ public:
             if (nullptr == curr)
                 return false;
         }
-        return true == curr->pass_;
+        return true;
     }
 private:
     int index(char c)
