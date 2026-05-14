@@ -43,36 +43,79 @@ using std::vector;
 class NestedIterator
 {
 public:
+    using IT = std::vector<NestedInteger>::const_iterator;
+    using ITpair = std::pair<IT, IT>;
+
     NestedIterator(vector<NestedInteger> &nestedList)
     {
-        dfs(nestedList);
+        stack_.push({ nestedList.begin(), nestedList.end() });
     }
 
     int next()
     {
-        return res_[index_++];
+        return curr_;
     }
 
     bool hasNext()
     {
-        return index_ < res_.size();
+        if (quit_) return false;
+
+        while (!stack_.empty())
+        {
+            ITpair* it = &stack_.top();
+
+            if (it->first == it->second)
+            {
+                stack_.pop();
+                if (!stack_.empty()) ++(stack_.top().first);
+            }
+            else if (it->first->isInteger())
+            {
+                curr_ = it->first->getInteger();
+
+                ++(it->first);
+                while (it->first == it->second)
+                {
+                    stack_.pop();
+                    if (stack_.empty())
+                    {
+                        quit_ = true;
+                        break;
+                    }
+
+                    it = &stack_.top();
+                    ++(it->first);
+                }
+
+                return true;
+            }
+            else
+            {
+                const auto& temp = it->first->getList();
+                stack_.push({ temp.begin(), temp.end() });
+            }
+        }
+
+        return false;
     }
 
 private:
-    void dfs(const std::vector<NestedInteger>& nestedList)
-    {
-        for (const NestedInteger& nest : nestedList)
-        {
-            if (nest.isInteger())
-                res_.push_back(nest.getInteger());
-            else
-                dfs(nest.getList());
-        }
-    }
+    // void dfs(const std::vector<NestedInteger>& nestedList)
+    // {
+    //     for (const NestedInteger& nest : nestedList)
+    //     {
+    //         if (nest.isInteger())
+    //             res_.push_back(nest.getInteger());
+    //         else
+    //             dfs(nest.getList());
+    //     }
+    // }
 
-    // std::stack<std::vector<NestedInteger>::iterator> stack_;
-    std::vector<int> res_;
-    int index_ = 0;
+    std::stack<ITpair> stack_;
+    int curr_ = 0;
+    bool quit_ = false;
+    // std::vector<int> res_;
+    // int index_ = 0;
 };
 
 /**
